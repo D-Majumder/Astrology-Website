@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Going through hard times, need guidance, want to be free of stress free,  you are at the right place.">
+    <meta name="keywords" content="Astro, Astrology, Plamist, Future"/>
+    <link rel="icon" href ="./images/favicon.ico" alt ="icon" type ="image/x-icon" /> 
+    <title>AstraJyoti - Divine Astrological Guidance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --accent-gold: #ca8a04; /* Darker Gold */
+            --accent-gold-bg: #facc15; /* Lighter Gold */
+            --accent-red: #dc2626; /* Red */
+            --accent-red-bg: #ef4444; /* Lighter Red */
+            --accent-green: #16a34a; /* Green */
+            --accent-green-bg: #22c55e; /* Lighter Green */
+            --text-dark: #1f2937; /* gray-800 */
+            --text-heading: #111827; /* gray-900 */
+            --text-muted: #4b5563; /* gray-600 */
+            --bg-base: #f9fafb; /* gray-50 */
+            --bg-alt: #ffffff; /* white */
+            --bg-input: #f3f4f6; /* gray-100 */
+            --border-color: #d1d5db; /* gray-300 */
+            --border-glass: rgba(0, 0, 0, 0.1);
+            --bg-glass: rgba(255, 255, 255, 0.75); /* Increased opacity */
+        }
+
+        html {
+            scroll-behavior: smooth; /* Enable smooth scrolling */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Color Palette Classes */
+        .accent-gold { color: var(--accent-gold); }
+        .accent-gold-bg { background-color: var(--accent-gold-bg); color: var(--text-dark); }
+        .accent-red { color: var(--accent-red); }
+        .accent-red-bg { background-color: var(--accent-red-bg); color: #ffffff; }
+        .accent-red-border { border-color: var(--accent-red); }
+        .accent-green { color: var(--accent-green); }
+        .accent-green-bg { background-color: var(--accent-green-bg); color: #ffffff; }
+        .text-light { color: var(--text-dark); } /* Adjusted for light theme */
+        .text-muted { color: var(--text-muted); }
+
+        /* Headings */
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+            color: var(--text-heading);
+        }
+
+        /* Glassmorphism */
+        .glassmorphism {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Animations */
+        .fade-in-section { opacity: 0; transform: translateY(40px); transition: opacity 0.9s ease-out, transform 0.9s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+        .hover-effect { transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; }
+        .hover-effect:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 12px 24px rgba(202, 138, 4, 0.15), 0 8px 8px rgba(220, 38, 38, 0.1); }
+
+        /* Rotating Chakra */
+        @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        .rotating-chakra {
+            animation: spin 25s linear infinite; opacity: 2; position: absolute;
+            top: 50%; left: 50%; z-index: 5; width: 150%; height: 150%;
+            max-width: 400px; max-height: 400px; pointer-events: none;
+        }
+
+        /* Parallax Background */
+        #home { position: relative; overflow: hidden; background-color: #e0f2fe; }
+        .parallax-bg {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('/Background.png');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            z-index: 0; will-change: transform; transition: transform 0.1s linear; opacity: 0.4;
+        }
+        #home > .z-10 { position: relative; z-index: 10; }
+
+        /* --- REVISED Slider Styles --- */
+        .slider-container { position: relative; overflow: hidden; }
+        .slider-track { display: flex; /* No transition here, applied by JS */ }
+        .slider-slide { box-sizing: border-box; flex-shrink: 0; }
+
+        /* Single Item Sliders (Showcase, Testimonials) */
+        .single-item-slider .slider-slide { width: 100%; padding: 0 0.5rem; }
+
+        /* Multi Item Slider (Services) */
+        .multi-item-slider .slider-slide {
+            width: 90%; /* Mobile first */
+            padding: 0 0.75rem; /* Increased padding for better spacing */
+            box-sizing: border-box; /* Ensure padding is included in width calculation */
+        }
+        @media (min-width: 768px) { .multi-item-slider .slider-slide { width: 50%; } }
+        @media (min-width: 1024px) { .multi-item-slider .slider-slide { width: 33.333%; } }
+
+        .slider-controls { position: absolute; bottom: -35px; left: 50%; transform: translateX(-50%); display: flex; gap: 0.75rem; }
+        .slider-dot { width: 12px; height: 12px; border-radius: 50%; background-color: rgba(202, 138, 4, 0.3); border: 1px solid rgba(202, 138, 4, 0.5); cursor: pointer; transition: all 0.3s ease; }
+        .slider-dot:hover { transform: scale(1.2); }
+        .slider-dot.active { background-color: var(--accent-gold); transform: scale(1.1); }
+        /* --- END REVISED Slider Styles --- */
+
+        /* Service Card Specific Styles */
+        .service-card {
+            display: flex; /* Use flexbox for internal layout */
+            flex-direction: column;
+            height: 100%; /* Ensure cards take full height of slide */
+            min-height: 300px; /* Minimum height for consistency */
+            justify-content: space-between; /* Space out content */
+        }
+        .service-card .card-content {
+            flex-grow: 1; /* Allow content to grow */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center icon and title */
+            text-align: center;
+        }
+        .service-card .card-icon {
+            font-size: 2.5rem; /* Slightly smaller icon */
+            margin-bottom: 1rem;
+        }
+        .service-card .card-title {
+            font-size: 1.2rem; /* Slightly smaller title */
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .service-card .card-description {
+            font-size: 0.875rem; /* Standard text size */
+            line-height: 1.5;
+            color: var(--text-muted);
+            margin-bottom: 1rem; /* Space before button */
+            flex-grow: 1; /* Allow description to take available space */
+        }
+        .service-card .card-button {
+            margin-top: auto; /* Push button to the bottom */
+            padding: 0.6rem 1.2rem; /* Adjust button padding */
+            font-size: 0.875rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            background-color: var(--accent-red);
+            color: white;
+            border: none;
+        }
+        .service-card .card-button:hover {
+            background-color: #b91c1c; /* Darker red on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+
+        /* FAQ Accordion */
+        .faq-question { cursor: pointer; transition: background-color 0.3s ease; }
+        .faq-question:hover { background-color: rgba(0, 0, 0, 0.03); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, padding 0.5s ease-out; padding: 0 1.5rem; }
+        .faq-answer.open { max-height: 300px; padding: 1.5rem; }
+        .faq-icon { transition: transform 0.3s ease; }
+        .faq-question.open .faq-icon { transform: rotate(180deg); }
+
+        /* Statistics Number */
+        .stat-number { font-size: 2.8rem; font-weight: 700; line-height: 1; }
+
+        /* Mobile Menu Icon */
+        .hamburger div { width: 25px; height: 3px; background-color: var(--text-dark); margin: 5px 0; transition: all 0.3s ease; }
+        .hamburger.active .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
+        .hamburger.active .line2 { opacity: 0; }
+        .hamburger.active .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+
+        /* Section Backgrounds */
+        .section-bg-alt { background-color: var(--bg-alt); }
+        .section-bg-base { background-color: var(--bg-base); }
+
+        /* Header */
+        header.glassmorphism { background: rgba(255, 255, 255, 0.85); border-bottom: 1px solid rgba(0, 0, 0, 0.08); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        header a { color: #374151; }
+        header a:hover { color: var(--accent-gold); }
+        header .accent-gold { color: var(--accent-gold); }
+        #mobile-menu { background: linear-gradient(to bottom, #ffffff, #f9fafb); border-top: 1px solid rgba(0, 0, 0, 0.08); }
+        #mobile-menu a { color: #374151; }
+        #mobile-menu a:hover { background-color: rgba(0, 0, 0, 0.03); }
+
+        /* Footer */
+        footer { background-color: #e5e7eb; border-top: 1px solid var(--border-color); color: var(--text-muted); padding: 2rem 1rem; /* Adjusted padding */ }
+        footer p { margin-bottom: 0.5rem; } /* Add spacing between footer lines */
+        footer a:hover { color: var(--accent-red); }
+        footer .accent-red { color: #b91c1c; }
+
+        /* Input fields */
+        input[type="text"], input[type="email"], input[type="number"], textarea, select {
+             background-color: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-dark);
+             border-radius: 0.5rem; padding: 0.75rem;
+        }
+        input::placeholder, textarea::placeholder { color: #9ca3af; /* gray-400 */ }
+        input:focus, textarea:focus, select:focus {
+              border-color: var(--accent-gold); box-shadow: 0 0 0 2px rgba(202, 138, 4, 0.2); background-color: #ffffff;
+              outline: none;
+        }
+
+        /* Horoscope Display */
+        #horoscopeDisplay { background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(0, 0, 0, 0.08); color: var(--text-muted); border-radius: 0.5rem; padding: 1.25rem; }
+        #horoscopeDisplay.has-content { color: #854d0e; /* Darkest gold/brown for result */ }
+
+        /* Inspiration Section Specific */
+        .inspiration-image-container {
+            position: relative; display: flex; justify-content: center; align-items: center;
+            max-width: 320px; width: 80%; margin-left: auto; margin-right: auto; min-height: 400px;
+        }
+         .inspiration-image-container .hanuman-image { position: relative; z-index: 10; max-width: 100%; height: auto; }
+
+         /* WhatsApp Button */
+         .whatsapp-float {
+            position: fixed; width: 60px; height: 60px; bottom: 40px; right: 40px;
+            background-color: #25d366; color: #FFF; border-radius: 50px; text-align: center;
+            font-size: 30px; box-shadow: 2px 2px 5px rgba(0,0,0,0.3); z-index: 100;
+            display: flex; justify-content: center; align-items: center; transition: transform 0.3s ease;
+         }
+         .whatsapp-float:hover { transform: scale(1.1); }
+
+    </style>
+</head>
+<body class="section-bg-base">
+
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glassmorphism">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold accent-gold flex items-center">
+                <i class="fas fa-star-of-life mr-2 text-xl"></i>
+                AstraJyoti
+            </a>
+            <div class="hidden md:flex space-x-5 lg:space-x-6 items-center text-sm lg:text-base">
+                <a href="#home" class="hover:accent-gold transition duration-200">Home</a>
+                <a href="#showcase" class="hover:accent-gold transition duration-200">Showcase</a>
+                <a href="#why-us" class="hover:accent-gold transition duration-200">Why Us</a>
+                <a href="#horoscope" class="hover:accent-gold transition duration-200">Daily Horoscope</a>
+                <a href="#services" class="hover:accent-gold transition duration-200">Services</a>
+                <a href="#testimonials" class="hover:accent-gold transition duration-200">Testimonials</a>
+                <a href="#faq" class="hover:accent-gold transition duration-200">FAQ</a>
+                <a href="#contact" class="hover:accent-gold transition duration-200">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="hamburger focus:outline-none">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 shadow-xl">
+             <a href="#home" class="block px-6 py-3 text-center hover:bg-gray-100 transition duration-200">Home</a>
+             <a href="#showcase" class="block px-6 py-3 text-center hover:bg-gray-100 transition duration-200">Showcase</a>
+             <a href="#why-us" class="block px-6 py-3 text-center hover:bg-gray-100 transition duration-200">Why Us</a>
+             <a href="#horoscope" class="block px-6 py-3 text-center hover:bg-gray-100 transition duration-200">Daily Horoscope</a>
+             <a href="#services" class="block px-6 py-3 text-center hover:bg-gray-100 transition duration-200">Services</a>
+             <a href="#testimonials" class="block px-6 py-3 text-center hover:bg-gray-100 transition duration-200">Testimonials</a>
+             <a href="#faq" class="block px-6 py-3 text-center hover:bg-gray-100 transition duration-200">FAQ</a>
+             <a href="#contact" class="block px-6 py-3 text-center hover:bg-gray-100 transition duration-200">Contact</a>
+        </div>
+    </header>
+
+    <main class="pt-20">
+
+        <section id="home" class="min-h-screen flex items-center justify-center text-center relative px-4 fade-in-section">
+            <div class="parallax-bg"></div>
+            <div class="z-10 relative">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-5 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 via-red-500 to-green-500"> Divine Guidance from the Cosmos </h1>
+                <p class="text-lg md:text-xl text-muted mb-8 max-w-3xl mx-auto bg-white/70 p-3 rounded-md shadow"> Unlock the wisdom of the stars. AstraJyoti offers personalized Vedic astrological insights to illuminate your path, relationships, and destiny. </p>
+                <a href="#services" class="inline-block accent-red-bg text-white font-bold py-3 px-10 rounded-lg text-lg transition duration-300 shadow-lg transform hover:scale-105 hover:bg-red-700"> Explore Our Services </a>
+            </div>
+        </section>
+
+        <section id="showcase" class="py-20 px-4 section-bg-alt fade-in-section">
+            <div class="container mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Explore Our Offerings</h2>
+                <p class="text-muted mb-12 max-w-2xl mx-auto">Visual glimpses into the guidance we provide.</p>
+                <div id="service-image-slider" class="slider-container single-item-slider max-w-4xl mx-auto relative mb-10">
+                    <div class="slider-track">
+                        </div>
+                    <div class="slider-controls" id="service-image-slider-dots"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-us" class="py-20 px-4 section-bg-base fade-in-section">
+             <div class="container mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Choose <span class="accent-gold">AstraJyoti?</span></h2>
+                <p class="text-muted mb-12 max-w-2xl mx-auto">Harnessing ancient wisdom with modern clarity to guide your journey.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect text-center"> <div class="text-5xl accent-gold mb-4"><i class="fas fa-om"></i></div> <h3 class="text-xl font-semibold mb-3 accent-gold">Vedic Accuracy</h3> <p class="text-sm text-muted">Rooted in authentic Vedic principles for profound and time-tested insights.</p> </div>
+                    <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect text-center"> <div class="text-5xl accent-red mb-4"><i class="fas fa-user-graduate"></i></div> <h3 class="text-xl font-semibold mb-3 accent-gold">Learned Astrologers</h3> <p class="text-sm text-muted">Consult with experienced and verified Pandits trained in various branches of Jyotish.</p> </div>
+                    <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect text-center"> <div class="text-5xl accent-green mb-4"><i class="fas fa-seedling"></i></div> <h3 class="text-xl font-semibold mb-3 accent-gold">Actionable Remedies</h3> <p class="text-sm text-muted">Receive practical and personalized remedies (Upayas) to navigate life's challenges.</p> </div>
+                    <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect text-center"> <div class="text-5xl accent-gold mb-4"><i class="fas fa-lock"></i></div> <h3 class="text-xl font-semibold mb-3 accent-gold">Trust & Privacy</h3> <p class="text-sm text-muted">Your consultations and personal data are treated with the highest confidentiality.</p> </div>
+                </div>
+            </div>
+        </section>
+
+         <section id="stats" class="py-16 px-4 bg-gradient-to-r from-red-500 via-yellow-400 to-green-500 text-white fade-in-section">
+             <div class="container mx-auto">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div> <span class="stat-number" data-target="1000">0</span><span class="text-4xl">+</span> <p class="text-lg font-light mt-2">Happy Clients</p> </div>
+                    <div> <span class="stat-number" data-target="10">0</span><span class="text-4xl">+</span> <p class="text-lg font-light mt-2">Years of Experience</p> </div>
+                    <div> <span class="stat-number" data-target="96">0</span><span class="text-4xl">%</span> <p class="text-lg font-light mt-2">Positive Feedback</p> </div>
+                    <div> <span class="stat-number" data-target="50000">0</span><span class="text-4xl">+</span> <p class="text-lg font-light mt-2">Consultations Done</p> </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="horoscope" class="py-20 px-4 section-bg-alt fade-in-section">
+             <div class="container mx-auto max-w-3xl text-center">
+                 <h2 class="text-3xl md:text-4xl font-bold mb-6">Today's <span class="accent-red">Rashifal</span></h2>
+                 <p class="text-muted mb-8"> Select your Rashi (Moon Sign) for your daily Vedic forecast. </p>
+                <div class="glassmorphism p-8 rounded-xl shadow-lg">
+                     <label for="horoscopeSignSelect" class="sr-only">Select Rashi</label>
+                     <select id="horoscopeSignSelect" name="horoscopeSign" class="text-lg rounded-lg focus:ring-red-500 focus:border-red-500 block w-full max-w-xs mx-auto p-3 mb-6">
+                        <option value="" disabled selected>Choose Your Rashi</option>
+                        <option value="Aries">Mesh (Aries) ♈</option>
+                        <option value="Taurus">Vrishabh (Taurus) ♉</option>
+                        <option value="Gemini">Mithun (Gemini) ♊</option>
+                        <option value="Cancer">Kark (Cancer) ♋</option>
+                        <option value="Leo">Singh (Leo) ♌</option>
+                        <option value="Virgo">Kanya (Virgo) ♍</option>
+                        <option value="Libra">Tula (Libra) ♎</option>
+                        <option value="Scorpio">Vrishchik (Scorpio) ♏</option>
+                        <option value="Sagittarius">Dhanu (Sagittarius) ♐</option>
+                        <option value="Capricorn">Makar (Capricorn) ♑</option>
+                        <option value="Aquarius">Kumbh (Aquarius) ♒</option>
+                        <option value="Pisces">Meen (Pisces) ♓</option>
+                    </select>
+                    <div id="horoscopeDisplay" class="text-left leading-relaxed"> Select a Rashi above to see today's horoscope... </div>
+                </div>
+                 <p class="text-sm text-muted mt-4 italic"> Daily Rashifal offers general guidance based on Moon sign. For personalized insights, a full Kundli analysis is recommended. </p>
+            </div>
+        </section>
+
+        <section id="services" class="py-20 px-4 section-bg-base fade-in-section">
+             <div class="container mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">Our <span class="accent-gold">Jyotish Services</span></h2>
+                <div id="services-slider" class="slider-container multi-item-slider relative mb-10">
+                    <div class="slider-track">
+                        <div class="slider-slide">
+                            <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect service-card">
+                                <div class="card-content">
+                                    <div class="card-icon accent-gold"><i class="fas fa-star"></i></div>
+                                    <h3 class="card-title accent-gold">Detailed Kundli Reading</h3>
+                                    <p class="card-description">In-depth analysis of your birth chart revealing planetary positions, strengths, weaknesses, and life path insights based on Vedic principles.</p>
+                                </div>
+                                <a href="#contact" class="card-button">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="slider-slide">
+                            <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect service-card">
+                                <div class="card-content">
+                                    <div class="card-icon accent-red"><i class="fas fa-heart"></i></div>
+                                    <h3 class="card-title accent-gold">Kundli Matching (Gun Milan)</h3>
+                                    <p class="card-description">Comprehensive compatibility analysis for marriage, assessing Ashtakoota score and other crucial factors for a harmonious union.</p>
+                                </div>
+                                <a href="#contact" class="card-button">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="slider-slide">
+                            <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect service-card">
+                                <div class="card-content">
+                                    <div class="card-icon accent-green"><i class="fas fa-briefcase"></i></div>
+                                    <h3 class="card-title accent-gold">Career & Business Astrology</h3>
+                                    <p class="card-description">Identify favorable career paths, auspicious timing for business ventures, and astrological remedies for professional growth.</p>
+                                </div>
+                                <a href="#contact" class="card-button">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="slider-slide">
+                             <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect service-card">
+                                 <div class="card-content">
+                                     <div class="card-icon accent-gold"><i class="fas fa-home"></i></div>
+                                     <h3 class="card-title accent-gold">Vastu Shastra Consultation</h3>
+                                     <p class="card-description">Harmonize your living or workspace according to Vastu principles to enhance positivity, prosperity, and well-being.</p>
+                                 </div>
+                                 <a href="#contact" class="card-button">Learn More</a>
+                            </div>
+                        </div>
+                         <div class="slider-slide">
+                             <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect service-card">
+                                 <div class="card-content">
+                                     <div class="card-icon accent-red"><i class="fas fa-calendar-check"></i></div>
+                                     <h3 class="card-title accent-gold">Muhurta (Auspicious Timing)</h3>
+                                     <p class="card-description">Find the most favorable date and time (Muhurta) for important events like weddings, housewarming, or starting new projects.</p>
+                                 </div>
+                                 <a href="#contact" class="card-button">Learn More</a>
+                            </div>
+                        </div>
+                         <div class="slider-slide">
+                             <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect service-card">
+                                 <div class="card-content">
+                                     <div class="card-icon accent-green"><i class="fas fa-gem"></i></div>
+                                     <h3 class="card-title accent-gold">Gemstone Recommendations</h3>
+                                     <p class="card-description">Personalized guidance on suitable gemstones based on your birth chart to strengthen positive planetary influences.</p>
+                                 </div>
+                                 <a href="#contact" class="card-button">Learn More</a>
+                            </div>
+                        </div>
+                         <div class="slider-slide">
+                             <div class="glassmorphism p-6 rounded-xl shadow-lg hover-effect service-card">
+                                 <div class="card-content">
+                                     <div class="card-icon accent-gold"><i class="fas fa-praying-hands"></i></div>
+                                     <h3 class="card-title accent-gold">Puja & Astrological Remedies</h3>
+                                     <p class="card-description">Guidance on specific Pujas, Mantras, Yantras, and other Vedic remedies (Upayas) to mitigate challenges and enhance fortune.</p>
+                                 </div>
+                                 <a href="#contact" class="card-button">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="slider-controls" id="services-slider-dots"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="inspiration" class="py-20 px-4 section-bg-alt fade-in-section">
+            <div class="container mx-auto flex flex-col md:flex-row items-center gap-12">
+                 <div class="md:w-2/5 text-center inspiration-image-container">
+                     <img src="/bg-cricle.webp" alt="Rotating Chakra" class="rotating-chakra">
+                     <img src="/Gods-129.webp" alt="Shri Hanuman Ji" class="hanuman-image rounded-lg mx-auto hover-effect">
+                 </div>
+                 <div class="md:w-3/5 text-center md:text-left">
+                     <h2 class="text-3xl md:text-4xl font-bold mb-6 accent-red">Strength, Devotion, Service</h2>
+                     <p class="text-muted mb-4 leading-relaxed"> Drawing inspiration from the unwavering devotion and immense strength of Shri Hanuman Ji, we strive to serve you with dedication and integrity. May his blessings remove obstacles from your path. </p>
+                     <p class="text-muted leading-relaxed"> Astrology helps us understand the cosmic play, while faith and righteous action empower us to navigate it. Jai Shri Ram! </p>
+                 </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="py-20 px-4 section-bg-base fade-in-section">
+            <div class="container mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">What Our Clients Say <span class="accent-green">(Anubhav)</span></h2>
+                <div id="testimonial-slider" class="slider-container single-item-slider max-w-3xl mx-auto relative mb-10">
+                    <div class="slider-track">
+                        </div>
+                    <div class="slider-controls" id="testimonial-slider-dots"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-20 px-4 section-bg-alt fade-in-section">
+             <div class="container mx-auto max-w-3xl">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center">Common Questions <span class="accent-gold">(Prashn)</span></h2>
+                <div class="space-y-4">
+                    <div class="glassmorphism rounded-lg overflow-hidden"> <div class="faq-question p-6 flex justify-between items-center"> <h3 class="text-lg font-semibold">What is Vedic Astrology (Jyotish)?</h3> <i class="fas fa-chevron-down faq-icon accent-red"></i> </div> <div class="faq-answer text-muted text-sm leading-relaxed"> Jyotish, or Vedic Astrology, is the ancient Indian science of light that studies the movement and positions of celestial bodies and their influence on human life and natural events. It's based on the sidereal zodiac and uses specific calculations like Dasha systems. </div> </div>
+                     <div class="glassmorphism rounded-lg overflow-hidden"> <div class="faq-question p-6 flex justify-between items-center"> <h3 class="text-lg font-semibold">How accurate is the birth time needed?</h3> <i class="fas fa-chevron-down faq-icon accent-red"></i> </div> <div class="faq-answer text-muted text-sm leading-relaxed"> The exact birth time is crucial, especially for determining the Ascendant (Lagna) and the house placements, which significantly impact predictions. An error of even a few minutes can change important details. Please provide the time from your birth certificate if possible. If unsure, mention it during booking; birth time rectification might be possible as a separate service. </div> </div>
+                     <div class="glassmorphism rounded-lg overflow-hidden"> <div class="faq-question p-6 flex justify-between items-center"> <h3 class="text-lg font-semibold">Are remedies guaranteed to work?</h3> <i class="fas fa-chevron-down faq-icon accent-red"></i> </div> <div class="faq-answer text-muted text-sm leading-relaxed"> Remedies (Upayas) are suggested based on astrological principles to help mitigate negative influences or enhance positive ones. Their effectiveness depends on various factors, including the individual's karma, faith, and correct performance of the remedy. While they are intended to help, specific results cannot be guaranteed (as mentioned in our disclaimer). </div> </div>
+                     <div class="glassmorphism rounded-lg overflow-hidden"> <div class="faq-question p-6 flex justify-between items-center"> <h3 class="text-lg font-semibold">What is the difference between Sun Sign and Moon Sign (Rashi)?</h3> <i class="fas fa-chevron-down faq-icon accent-red"></i> </div> <div class="faq-answer text-muted text-sm leading-relaxed"> Western astrology primarily uses your Sun Sign (based on birth date). Vedic Astrology gives significant importance to your Moon Sign or Rashi (the zodiac sign where the Moon was placed at your birth time). Rashi is considered more indicative of your inner nature, emotions, and how you experience life. Our daily horoscopes are based on Rashi. </div> </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 px-4 section-bg-base fade-in-section">
+             <div class="container mx-auto flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/3 text-center md:text-left">
+                    <img src="/Dhuni_baba.webp" alt="[Your Name/Astrologer Name]" class="rounded-full shadow-lg mx-auto md:mx-0 w-64 h-64 md:w-full md:h-auto max-w-xs border-4 accent-red-border object-cover hover-effect">
+                </div>
+                <div class="md:w-2/3 text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Meet Your <span class="accent-gold">Jyotishi</span></h2>
+                    <h3 class="text-2xl font-semibold text-muted mb-4">[Your Name/Astrologer Name]</h3>
+                    <p class="mb-4 leading-relaxed text-light"> Namaste! I am [Your Name], a dedicated practitioner of Vedic Astrology with [Number] years of experience in guiding individuals through the cosmic map of their lives. My passion lies in decoding the ancient wisdom of the Vedas to offer clarity, direction, and effective remedies. </p>
+                    <p class="mb-4 leading-relaxed text-light"> My expertise includes [mention specific areas like Prashna Kundli, Nakshatra Analysis, Muhurta Selection, etc.]. I believe in an ethical, compassionate approach, empowering you to understand your karma and make informed choices. </p>
+                     <p class="leading-relaxed text-light"> Let's explore the divine plan together. </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 px-4 section-bg-alt fade-in-section">
+            <div class="container mx-auto max-w-3xl text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">Connect for a <span class="accent-gold">Consultation</span></h2>
+                <p class="text-muted mb-10"> Ready to gain deeper insights? Use the booking link or send an inquiry below. </p>
+                <div class="mb-10 text-center">
+                     <a href="YOUR_BOOKING_LINK_HERE" target="_blank" rel="noopener noreferrer" class="inline-block accent-red-bg text-white font-bold py-3 px-10 rounded-lg text-lg transition duration-300 shadow-lg transform hover:scale-105 hover:bg-red-700"> 📅 Book Consultation Online </a>
+                     <p class="text-sm text-muted mt-2">(Link connects to [Your Booking System Name])</p>
+                </div>
+                <div class="glassmorphism p-8 rounded-xl shadow-lg text-left">
+                    <h3 class="text-2xl font-semibold mb-6 text-center accent-gold">Send Your Query (Prashn)</h3>
+                    <form id="contactForm">
+                         <div class="mb-5"> <label for="name" class="block mb-2 text-sm font-medium text-muted">Your Name (Naam)</label> <input type="text" id="name" name="name" class="text-sm rounded-lg block w-full p-3" placeholder="Enter your name" required> </div>
+                        <div class="mb-5"> <label for="email" class="block mb-2 text-sm font-medium text-muted">Your Email</label> <input type="email" id="email" name="email" class="text-sm rounded-lg block w-full p-3" placeholder="you@example.com" required> </div>
+                         <div class="mb-5"> <label for="subject" class="block mb-2 text-sm font-medium text-muted">Subject (Vishay)</label> <input type="text" id="subject" name="subject" class="text-sm rounded-lg block w-full p-3" placeholder="Reason for contacting" required> </div>
+                        <div class="mb-5"> <label for="message" class="block mb-2 text-sm font-medium text-muted">Message (Sandesh)</label> <textarea id="message" name="message" rows="4" class="text-sm rounded-lg block w-full p-3" placeholder="Your message..." required></textarea> </div>
+                        <div class="text-center"> <button type="submit" class="accent-green-bg font-bold py-3 px-8 rounded-lg text-lg transition duration-300 shadow-md hover:bg-green-700 transform hover:scale-105"> Send Inquiry <i class="fas fa-paper-plane ml-2"></i> </button> </div>
+                    </form>
+                    <div id="formResult" class="mt-6 text-center font-semibold min-h-[24px]"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <a href="https://wa.me/910000000000" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <footer>
+        <div class="container mx-auto text-center text-sm">
+            <div class="mb-4">
+                 <a href="#" aria-label="Instagram" class="mx-2 hover:accent-red transition duration-200"><i class="fab fa-instagram fa-lg"></i></a>
+                 <a href="#" aria-label="Facebook" class="mx-2 hover:accent-red transition duration-200"><i class="fab fa-facebook fa-lg"></i></a>
+                 <a href="#" aria-label="Whatsapp" class="mx-2 hover:accent-red transition duration-200"><i class="fab fa-whatsapp fa-lg"></i></a>
+            </div>
+            <p>&copy; 2025 AstraJyoti - [Your Name/Astrologer Name]. All Rights Reserved.</p>
+            <p>Vedic Astrology provides guidance based on ancient principles. It should not replace professional medical, legal, or financial advice.</p>
+            <p class="font-semibold accent-red mt-3">Disclaimer: There are no guarantees that every person using this service will get their desired results for sure. Astrological results depend on a lot of factors and the results may vary from person to person.</p>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         * Reusable Slider Function - v3 (Refined Logic)
+         * Creates controls and handles automatic/manual sliding.
+         * Handles single-item looping and multi-item non-looping.
+         */
+        function initializeSlider(containerId, options = {}) {
+            const sliderContainer = document.getElementById(containerId);
+            if (!sliderContainer) { console.warn(`Slider container #${containerId} not found.`); return; }
+
+            const track = sliderContainer.querySelector('.slider-track');
+            const dotsContainerId = options.dotsContainerId || `${containerId}-dots`;
+            const dotsContainer = document.getElementById(dotsContainerId);
+            const intervalTime = options.interval === 0 ? 0 : (options.interval || 5000);
+            const showDots = options.showDots !== false;
+            const isMultiItem = options.multiItem || false;
+            const loop = !isMultiItem; // Loop only for single-item sliders
+
+            let originalSlidesHTML = track ? track.innerHTML : ''; // Store original HTML
+            let slides = []; // All slide elements (including clones if looping)
+            let originalSlideCount = 0;
+            let slideInterval;
+            let currentLogicalIndex = 0; // Index relative to original slides/groups
+            let isTransitioning = false;
+            let slidesPerView = 1;
+            let slideWidth = 0; // Width of a single slide in pixels
+
+            function calculateDimensions() {
+                if (!track || !slides.length) return;
+                const firstSlide = slides[loop ? 1 : 0]; // Use original slide for width calculation
+                if (!firstSlide) return;
+                slideWidth = firstSlide.offsetWidth; // Get actual width including padding/margins
+
+                if (isMultiItem) {
+                    const containerWidth = sliderContainer.offsetWidth;
+                    // Ensure slideWidth is valid before calculating slidesPerView
+                    if (slideWidth > 0) {
+                        slidesPerView = Math.max(1, Math.floor(containerWidth / slideWidth));
+                        slidesPerView = Math.min(slidesPerView, originalSlideCount); // Don't exceed total slides
+                    } else {
+                        slidesPerView = 1; // Fallback if width calculation fails
+                        console.warn(`Slide width calculation failed for slider ${containerId}. Defaulting to 1 slide per view.`);
+                    }
+                } else {
+                    slidesPerView = 1;
+                }
+                console.log(`Slider ${containerId}: slideWidth=${slideWidth}, slidesPerView=${slidesPerView}`); // Debug log
+            }
+
+
+            function setup() {
+                if (!track) return;
+                // Use the already present HTML content instead of resetting from originalSlidesHTML
+                // track.innerHTML = originalSlidesHTML; // Reset track content
+                const originalSlideElements = Array.from(track.children);
+                originalSlideCount = originalSlideElements.length;
+
+                if (originalSlideCount <= 1) {
+                    if(dotsContainer) dotsContainer.style.display = 'none';
+                    track.style.transform = 'translateX(0px)'; // Ensure it's positioned correctly
+                    return; // No slider needed
+                }
+
+                // --- Cloning for Looping ---
+                if (loop) {
+                    // Clear existing clones before adding new ones
+                    const existingClones = track.querySelectorAll('[data-clone]');
+                    existingClones.forEach(clone => clone.remove());
+
+                    const cloneFirst = originalSlideElements[0].cloneNode(true);
+                    const cloneLast = originalSlideElements[originalSlideCount - 1].cloneNode(true);
+                    cloneFirst.setAttribute('data-clone', 'first');
+                    cloneLast.setAttribute('data-clone', 'last');
+                    track.appendChild(cloneFirst);
+                    track.insertBefore(cloneLast, originalSlideElements[0]);
+                    slides = Array.from(track.children); // Update slides array with clones
+                } else {
+                    slides = originalSlideElements; // Use original slides directly
+                }
+
+                calculateDimensions(); // Calculate initial dimensions
+
+                // --- Initial Position ---
+                currentLogicalIndex = 0;
+                positionTrackAtIndex(loop ? 1 : 0, true); // Position instantly
+
+                 // --- Dots Setup ---
+                if (showDots && dotsContainer) {
+                    dotsContainer.innerHTML = ''; // Clear previous dots
+                    const numDots = isMultiItem ? Math.max(1, originalSlideCount - slidesPerView + 1) : originalSlideCount;
+                    for (let i = 0; i < numDots; i++) {
+                        const dot = document.createElement('button');
+                        dot.classList.add('slider-dot');
+                        if (i === 0) dot.classList.add('active');
+                        dot.setAttribute('aria-label', `Go to slide group ${i + 1}`);
+                        dot.addEventListener('click', () => { goToLogicalIndex(i); resetInterval(); });
+                        dotsContainer.appendChild(dot);
+                    }
+                     dotsContainer.style.display = numDots > 1 ? 'flex' : 'none'; // Show dots only if multiple pages/slides
+                } else if (dotsContainer) {
+                    dotsContainer.style.display = 'none';
+                }
+
+                startInterval();
+            }
+
+            function positionTrackAtIndex(trackIndex, instant = false) {
+                 if (!track || !slides.length) return;
+                 // Recalculate slideWidth just in case it wasn't ready initially or changed
+                 const referenceSlide = slides[loop ? 1 : 0];
+                 slideWidth = referenceSlide ? referenceSlide.offsetWidth : sliderContainer.offsetWidth;
+
+                 if (slideWidth <= 0) {
+                    console.warn(`Invalid slideWidth (${slideWidth}) for slider ${containerId}. Cannot position track.`);
+                    return;
+                 }
+
+                 const offset = -trackIndex * slideWidth;
+                 track.style.transition = instant ? 'none' : 'transform 0.5s ease-in-out';
+                 track.style.transform = `translateX(${offset}px)`;
+            }
+
+            // Function to move to a specific *logical* slide/group index
+            function goToLogicalIndex(logicalIndex) {
+                if (isTransitioning || !track) return;
+                isTransitioning = true;
+
+                let targetTrackIndex; // The actual index in the track array (with clones)
+                let targetLogicalIndexClamped = logicalIndex; // The final logical index after clamping
+
+                if (loop) {
+                    targetTrackIndex = logicalIndex + 1; // Account for prepended clone
+                    targetLogicalIndexClamped = logicalIndex % originalSlideCount;
+                } else if (isMultiItem) {
+                    calculateDimensions(); // Recalculate slidesPerView in case window resized
+                    const maxLogicalIndex = Math.max(0, originalSlideCount - slidesPerView);
+                    targetLogicalIndexClamped = Math.max(0, Math.min(logicalIndex, maxLogicalIndex)); // Clamp index
+                    targetTrackIndex = targetLogicalIndexClamped; // Track index matches logical index
+                } else {
+                    targetLogicalIndexClamped = logicalIndex % originalSlideCount;
+                    targetTrackIndex = targetLogicalIndexClamped;
+                }
+
+                positionTrackAtIndex(targetTrackIndex);
+                currentLogicalIndex = targetLogicalIndexClamped; // Update the current logical index
+
+                if (showDots) updateDots(currentLogicalIndex);
+
+                setTimeout(() => {
+                    isTransitioning = false;
+                    if (loop) {
+                        handleLoopJump(targetTrackIndex);
+                    }
+                }, 550); // Match transition duration + buffer
+            }
+
+            // Handle infinite loop jump (only for single-item sliders)
+            function handleLoopJump(trackIndex) {
+                if (!loop || slides.length <= originalSlideCount) return; // Only applies to looping sliders
+
+                let newTrackIndex = trackIndex;
+                let needsReposition = false;
+
+                if (trackIndex === 0) { // If we landed on the last clone
+                    newTrackIndex = originalSlideCount; // Go to the actual last slide index
+                    currentLogicalIndex = originalSlideCount - 1;
+                    needsReposition = true;
+                } else if (trackIndex === slides.length - 1) { // If we landed on the first clone
+                    newTrackIndex = 1; // Go to the actual first slide index
+                    currentLogicalIndex = 0;
+                    needsReposition = true;
+                }
+
+                if (needsReposition) {
+                    positionTrackAtIndex(newTrackIndex, true); // Reposition instantly
+                }
+                 // Update dots after potential jump repositioning
+                 if (showDots) updateDots(currentLogicalIndex);
+            }
+
+
+            function updateDots(activeIndex) {
+                const dots = dotsContainer?.querySelectorAll('.slider-dot');
+                if (dots) {
+                    dots.forEach((dot, idx) => dot.classList.toggle('active', idx === activeIndex));
+                }
+            }
+
+            function nextSlide() {
+                if (isTransitioning) return;
+                let nextLogicalIndex;
+                if (isMultiItem) {
+                    calculateDimensions(); // Recalculate slidesPerView
+                    const maxLogicalIndex = Math.max(0, originalSlideCount - slidesPerView);
+                    nextLogicalIndex = (currentLogicalIndex + 1) > maxLogicalIndex ? 0 : currentLogicalIndex + 1;
+                } else {
+                    nextLogicalIndex = (currentLogicalIndex + 1) % originalSlideCount;
+                }
+                goToLogicalIndex(nextLogicalIndex);
+            }
+
+            function startInterval() {
+                clearInterval(slideInterval);
+                 // Recalculate dimensions before checking if interval is needed
+                 calculateDimensions();
+                if (originalSlideCount > (isMultiItem ? slidesPerView : 1) && intervalTime > 0) {
+                    slideInterval = setInterval(nextSlide, intervalTime);
+                }
+            }
+            function resetInterval() { startInterval(); }
+
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                 clearTimeout(resizeTimeout);
+                 resizeTimeout = setTimeout(() => {
+                     console.log("Resizing slider: " + containerId);
+                     setup(); // Re-run setup to recalculate widths and clones/dots
+                 }, 250);
+            });
+
+            // Initial setup
+            if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', setup); }
+            else { setup(); }
+        }
+
+
+        // --- Initialize Sliders ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Showcase Slider (Content added via JS)
+            const showcaseTrack = document.querySelector('#service-image-slider .slider-track');
+            if (showcaseTrack) {
+                showcaseTrack.innerHTML = `
+                    <div class="slider-slide px-2"> <img src="/9.png" alt="Match Making Showcase" class="w-full h-auto object-cover rounded-lg shadow-md"> </div>
+                    <div class="slider-slide px-2"> <img src="/3.png" alt="Match Making Showcase" class="w-full h-auto object-cover rounded-lg shadow-md"> </div>
+                    <div class="slider-slide px-2"> <img src="/4.png" alt="Vastu Consultation Showcase" class="w-full h-auto object-cover rounded-lg shadow-md"> </div>
+                    <div class="slider-slide px-2"> <img src="/5.png" alt="Gemstone Guidance Showcase" class="w-full h-auto object-cover rounded-lg shadow-md"> </div>
+                    <div class="slider-slide px-2"> <img src="/7.png" alt="Puja Services Showcase" class="w-full h-auto object-cover rounded-lg shadow-md"> </div>
+                    <div class="slider-slide px-2"> <img src="/9.png" alt="Numerology Showcase" class="w-full h-auto object-cover rounded-lg shadow-md"> </div>
+                    <div class="slider-slide px-2"> <img src="/10.png" alt="Career Guidance Showcase" class="w-full h-auto object-cover rounded-lg shadow-md"> </div>
+                    <div class="slider-slide px-2"> <img src="/4.png" alt="Health Astrology Showcase" class="w-full h-auto object-cover rounded-lg shadow-md"> </div>
+                `;
+                initializeSlider('service-image-slider', { interval: 4000 });
+            }
+
+            // Services Slider (Content is now in HTML)
+            initializeSlider('services-slider', { interval: 6000, multiItem: true });
+
+            // Testimonial Slider (Content added via JS)
+            const testimonialTrack = document.querySelector('#testimonial-slider .slider-track');
+             if (testimonialTrack) {
+                testimonialTrack.innerHTML = `
+                    <div class="slider-slide"> <div class="glassmorphism p-8 rounded-xl shadow-lg text-left"> <p class="italic text-muted mb-4">"The detailed Kundli analysis was eye-opening. The remedies suggested were practical and have genuinely helped improve my focus and career prospects. Highly accurate!"</p> <p class="font-semibold accent-gold">- Rajesh P., Pune</p> </div> </div>
+                    <div class="slider-slide"> <div class="glassmorphism p-8 rounded-xl shadow-lg text-left"> <p class="italic text-muted mb-4">"We used the Kundli matching service before our wedding. The detailed analysis helped us understand our compatibility and areas to work on. Thank you for the guidance!"</p> <p class="font-semibold accent-gold">- Meera & Vikram, Hyderabad</p> </div> </div>
+                    <div class="slider-slide"> <div class="glassmorphism p-8 rounded-xl shadow-lg text-left"> <p class="italic text-muted mb-4">"I consulted regarding Vastu for my new home. The advice was clear, logical, and based on proper principles. Feeling much more positive energy now."</p> <p class="font-semibold accent-gold">- Sunita G., Chandigarh</p> </div> </div>
+                    <div class="slider-slide"> <div class="glassmorphism p-8 rounded-xl shadow-lg text-left"> <p class="italic text-muted mb-4">"The Muhurta selection for my business launch was perfect. Everything went smoothly, and I feel confident about the start. Excellent service!"</p> <p class="font-semibold accent-gold">- Amit Sharma, Delhi</p> </div> </div>
+                    <div class="slider-slide"> <div class="glassmorphism p-8 rounded-xl shadow-lg text-left"> <p class="italic text-muted mb-4">"Received gemstone recommendations based on my chart. The astrologer explained everything clearly. Feeling the positive effects already."</p> <p class="font-semibold accent-gold">- Deepika V., Bangalore</p> </div> </div>
+                    <div class="slider-slide"> <div class="glassmorphism p-8 rounded-xl shadow-lg text-left"> <p class="italic text-muted mb-4">"Very patient and knowledgeable astrologer. Helped me understand complex dasha periods and provided simple remedies. Grateful for the consultation."</p> <p class="font-semibold accent-gold">- Naveen K., Chennai</p> </div> </div>
+                `;
+                 initializeSlider('testimonial-slider', { interval: 7000 });
+            }
+        });
+
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuButton && mobileMenu) {
+             mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenuButton.classList.toggle('active');
+            });
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuButton.classList.remove('active');
+                });
+            });
+        }
+
+        // --- Zodiac Sign Finder ---
+        // Removed as per previous edits, keeping placeholder logic out
+
+        // --- Daily Horoscope Display ---
+        const horoscopeSelect = document.getElementById('horoscopeSignSelect');
+        const horoscopeDisplayDiv = document.getElementById('horoscopeDisplay');
+        const dailyHoroscopes = { /* ... horoscope data ... */
+             "Aries": "♈ Mesh (Aries): Energy is high, focus on personal goals. Be mindful of impulsive speech. Good day for physical activity. Some unexpected expenses might arise.",
+            "Taurus": "♉ Vrishabh (Taurus): Focus on family and finances. A calm approach works best. Good time for investments or savings. Avoid stubbornness in relationships.",
+            "Gemini": "♊ Mithun (Gemini): Communication and short trips are favored. Express your ideas clearly. Good day for learning or networking. Be adaptable to changes.",
+            "Cancer": "♋ Kark (Cancer): Pay attention to finances and possessions. Your speech can be influential. Enjoy comforts but avoid overindulgence. Family matters need attention.",
+            "Leo": "♌ Singh (Leo): Confidence is high. Focus on self-expression and personal projects. Good day for leadership roles. Be generous but avoid arrogance.",
+            "Virgo": "♍ Kanya (Virgo): A day for introspection and planning. Expenses might increase. Pay attention to health. Good time for spiritual practices or charity.",
+            "Libra": "♎ Tula (Libra): Gains from social circles or elder siblings possible. Focus on your hopes and dreams. Good day for teamwork. Balance personal and social life.",
+            "Scorpio": "♏ Vrishchik (Scorpio): Career and public image are in focus. Opportunities for recognition may arise. Work diligently. Maintain good relations with superiors.",
+            "Sagittarius": "♐ Dhanu (Sagittarius): Fortune favors learning, travel, and spiritual pursuits. Seek guidance from mentors. Good day for higher education or long-distance communication.",
+            "Capricorn": "♑ Makar (Capricorn): Be mindful of sudden changes or hidden matters. Good day for research or dealing with joint finances/inheritance. Maintain patience.",
+            "Aquarius": "♒ Kumbh (Aquarius): Focus on partnerships and relationships (personal & business). Collaboration is key. Good day for negotiations. Listen to your partner's perspective.",
+            "Pisces": "♓ Meen (Pisces): Pay attention to health, routine, and overcoming obstacles. Good day for service-oriented work. Be mindful of potential disagreements. Manage debts wisely."
+        };
+         if (horoscopeSelect && horoscopeDisplayDiv) { /* ... listener logic ... */
+              horoscopeSelect.addEventListener('change', () => {
+                const selectedSign = horoscopeSelect.value;
+                if (selectedSign && dailyHoroscopes[selectedSign]) {
+                    horoscopeDisplayDiv.textContent = dailyHoroscopes[selectedSign];
+                    horoscopeDisplayDiv.classList.add('has-content'); // Add class for styling
+                } else {
+                    horoscopeDisplayDiv.textContent = 'Select a Rashi above to see today\'s horoscope...';
+                    horoscopeDisplayDiv.classList.remove('has-content'); // Remove styling class
+                }
+            });
+         }
+
+        // --- Fade-In Animation ---
+        const fadeElements = document.querySelectorAll('.fade-in-section');
+        if ("IntersectionObserver" in window) { /* ... observer logic ... */
+             const fadeObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            fadeElements.forEach(el => fadeObserver.observe(el));
+        } else { fadeElements.forEach(el => el.classList.add('is-visible')); }
+
+        // --- Contact Form ---
+        const contactForm = document.getElementById('contactForm');
+        const formResultDiv = document.getElementById('formResult');
+        if (contactForm && formResultDiv) { /* ... listener logic ... */
+              contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                formResultDiv.textContent = 'Sending...';
+                formResultDiv.className = 'mt-6 text-center font-semibold min-h-[24px] text-muted';
+                // Simulate sending
+                setTimeout(() => {
+                     formResultDiv.textContent = 'Message sent successfully! Thank you.';
+                     formResultDiv.className = 'mt-6 text-center font-semibold min-h-[24px] accent-green';
+                     contactForm.reset();
+                     // Clear message after a delay
+                     setTimeout(() => { formResultDiv.textContent = ''; }, 5000);
+                }, 1500);
+            });
+        }
+
+        // --- Smooth Scrolling ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { /* ... listener logic ... */
+             anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerOffset = document.querySelector('header')?.offsetHeight || 70; // Get header height dynamically
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                } else if (targetId === '#home') {
+                    window.scrollTo({ top: 0, behavior: "smooth" }); // Special case for home
+                }
+            });
+        });
+
+
+        // --- FAQ Accordion ---
+        const faqItems = document.querySelectorAll('.faq-question');
+        faqItems.forEach(item => { /* ... listener logic ... */
+             item.addEventListener('click', () => {
+                const answer = item.nextElementSibling;
+                const allAnswers = document.querySelectorAll('.faq-answer');
+                const wasOpen = answer.classList.contains('open'); // Check if it was already open
+
+                // Close all answers first
+                allAnswers.forEach(ans => {
+                    ans.classList.remove('open');
+                    ans.previousElementSibling.classList.remove('open'); // Also remove open class from question
+                });
+
+                // If it wasn't open before, open it now
+                if (!wasOpen) {
+                    answer.classList.add('open');
+                    item.classList.add('open'); // Add open class to question as well
+                }
+            });
+        });
+
+
+        // --- Statistics Counter ---
+        const statsSection = document.getElementById('stats');
+        if ("IntersectionObserver" in window && statsSection) { /* ... observer logic ... */
+              const statNumbers = statsSection.querySelectorAll('.stat-number');
+            let statsAnimated = false;
+            const animateStat = (element) => {
+                const target = +element.getAttribute('data-target');
+                const duration = 1500; // Animation duration in ms
+                const stepTime = Math.max(10, Math.abs(Math.floor(duration / target))); // Calculate step time dynamically
+                let current = 0;
+                // Calculate increment more precisely
+                const increment = Math.max(1, Math.ceil(target / (duration / stepTime)));
+
+                 if (target === 0) { element.innerText = '0'; return; } // Handle zero target
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                         current = target;
+                         clearInterval(timer);
+                    }
+                    element.innerText = current.toLocaleString(); // Format number with commas
+                }, stepTime);
+            };
+            const statsObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !statsAnimated) {
+                        statNumbers.forEach(num => animateStat(num));
+                        statsAnimated = true; // Ensure animation runs only once
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, { threshold: 0.5 }); // Trigger when 50% visible
+            statsObserver.observe(statsSection);
+        } else { // Fallback for browsers without IntersectionObserver
+            document.querySelectorAll('.stat-number').forEach(el => {
+                el.innerText = (+el.getAttribute('data-target')).toLocaleString();
+            });
+        }
+
+        // --- Parallax Hero ---
+        const parallaxBg = document.querySelector('.parallax-bg');
+        if (parallaxBg) { /* ... scroll listener logic ... */
+             let ticking = false;
+            const updateParallax = () => {
+                // Reduce the parallax effect slightly for subtlety
+                const scrollOffset = window.pageYOffset * 0.25;
+                parallaxBg.style.transform = `translateY(${scrollOffset}px)`;
+                ticking = false;
+            };
+            const requestTick = () => {
+                if (!ticking) {
+                    requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            };
+            // Initial call to set position
+            updateParallax();
+            window.addEventListener('scroll', requestTick, { passive: true });
+        }
+
+    </script>
+
+</body>
+</html>
