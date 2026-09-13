@@ -23,8 +23,8 @@ HTML, Tailwind CSS, JavaScript.
 ## Setup
 
 ```bash
-git clone https://github.com/D-Majumder/Astrology-Website.git
-cd Astrology-Website
+git clone https://github.com/D-Majumder/astrology-website.git
+cd astrology-website
 ```
 
 Open `index.html` in a browser to preview the layout. Text, images, and daily horoscope updates are customizable within the JavaScript section; booking links and contact details can be personalized to match the astrologer's own information.
